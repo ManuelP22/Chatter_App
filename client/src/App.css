@@ -1,5 +1,5 @@
 :root {
-  --primary-color: linear-gradient(161deg, rgba(0, 56, 255, 0.25) 0%, rgba(0, 163, 255, 0.54) 100%);  
+  --primary-color: linear-gradient(161deg, rgba(0, 56, 255, 0.25) 0%, rgba(0, 163, 255, 0.54) 100%)!important;  
   --primary-color-alpha: #005fff1a;
 }
 
