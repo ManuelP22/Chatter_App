@@ -77,8 +77,8 @@ const TeamChannelHeader = ({ setIsEditing }) => {
   
     const getWatcherText = (watchers) => {
       if (!watchers) return 'No hay usuarios conectados';
-      if (watchers === 1) return '1 usuario conectado';
-      return `${watchers} usuarios conectados`;
+      if (watchers === 1) return '1 usuario online';
+      return `${watchers} usuarios online`;
     };
   
     return (

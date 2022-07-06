@@ -1,42 +1,42 @@
-import React from 'react'
-import { Channel, useChatContext, MessageTeam } from 'stream-chat-react';
+import React from 'react';
+import { Channel, MessageTeam } from 'stream-chat-react';
 
-import { ChannelInner, CreateChannel, EditChannel } from './'
+import { ChannelInner, CreateChannel, EditChannel } from './';
 
 const ChannelContainer = ({ isCreating, setIsCreating, isEditing, setIsEditing, createType }) => {
+    if(isCreating) {
+        return (
+            <div className="channel__container">
+                <CreateChannel createType={createType} setIsCreating={setIsCreating} />
+            </div>
+        )
+    }
 
-  const { channel } = useChatContext();
+    if(isEditing) {
+        return (
+            <div className="channel__container">
+                <EditChannel setIsEditing={setIsEditing} />
+            </div> 
+        )
+    }
 
-  if(isCreating) {
-    return (
-        <div className="channel__container">
-            <CreateChannel createType={createType} setIsCreating={setIsCreating} />
+    const EmptyState = () => (
+        <div className="channel-empty__container">
+            <p className="channel-empty__first">Comienzo del historial de chat</p>
+            <p className="channel-empty__second">Envia mensajes fotos y emojis!!</p>
         </div>
     )
-  }
 
-  if(isEditing) {
     return (
-      <div className="channel__container">
-          <EditChannel setIsEditing={setIsEditing} />
-      </div>
-    )
-  }
-
-  const EmptyState = () => (
-    <div className="channel-empty__container">
-        <p className="channel-empty__first">Comienzo de historial de chat.</p>
-        <p className="channel-empty__second">Envia mensajes, links, emojis y mas!</p>
-    </div>
-  )
-
-  return (
-    <div className="channel__container">
-      <Channel EmptyStateIndicator={EmptyState} Message={(messageProps, i) => <MessageTeam key={i} { ...messageProps }/>}>
-          <ChannelInner setIsEditing={setIsEditing} />
-      </Channel>
-    </div>
-  )
+        <div className=" channel__container">
+            <Channel
+                EmptyStateIndicator={EmptyState}
+                Message={(messageProps, i) => <MessageTeam key={i} {...messageProps} />}
+            >
+                <ChannelInner setIsEditing={setIsEditing} />
+            </Channel>
+        </div>
+    );
 }
 
-export default ChannelContainer
+export default ChannelContainer;

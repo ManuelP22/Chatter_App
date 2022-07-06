@@ -17,29 +17,28 @@ const initialState = {
 
 const Auth = () => {
     const [form, setForm] = useState(initialState);
-    const [isSignup, setIsSignup] = useState(false);
+    const [isSignup, setIsSignup] = useState(true);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
-
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { fullName, username, password, phoneNumber, avatarURL } = form;
+        const { username, password, phoneNumber, avatarURL } = form;
 
         const URL = 'http://localhost:5000/auth';
+        // const URL = 'https://medical-pager.herokuapp.com/auth';
 
-        const { data: { token, userId, hashedPassword } } = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {
-            username, password, fullName, phoneNumber, avatarURL,
+        const { data: { token, userId, hashedPassword, fullName } } = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {
+            username, password, fullName: form.fullName, phoneNumber, avatarURL,
         });
 
         cookies.set('token', token);
         cookies.set('username', username);
         cookies.set('fullName', fullName);
         cookies.set('userId', userId);
-        
 
         if(isSignup) {
             cookies.set('phoneNumber', phoneNumber);
@@ -48,19 +47,18 @@ const Auth = () => {
         }
 
         window.location.reload();
-    
     }
 
     const switchMode = () => {
         setIsSignup((prevIsSignup) => !prevIsSignup);
     }
 
-  return (
-    <div className = "auth__form-container">
-        <div className = "auth__form-container_fields">
-            <div className = "auth__form-container_fields-content">
-                <p>{isSignup ? 'Registrarse' : 'Iniciar Sesion'}</p>
-                <form onSubmit={handleSubmit}>
+    return (
+        <div className="auth__form-container">
+            <div className="auth__form-container_fields">
+                <div className="auth__form-container_fields-content">
+                    <p>{isSignup ? 'Registrarse' : 'Iniciar Sesion'}</p>
+                    <form onSubmit={handleSubmit}>
                         {isSignup && (
                             <div className="auth__form-container_fields-content_input">
                                 <label htmlFor="fullName">Nombre Completo</label>
@@ -74,22 +72,22 @@ const Auth = () => {
                             </div>
                         )}
                         <div className="auth__form-container_fields-content_input">
-                            <label htmlFor="username">Nombre de Usuario</label>
+                            <label htmlFor="username">Usuario</label>
                                 <input 
                                     name="username" 
                                     type="text"
-                                    placeholder="Nombre de Usuario"
+                                    placeholder="Usuario"
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
                         {isSignup && (
                             <div className="auth__form-container_fields-content_input">
-                                <label htmlFor="phoneNumber">Nombre Telefonico</label>
+                                <label htmlFor="phoneNumber">Numero de Telefono</label>
                                 <input 
                                     name="phoneNumber" 
                                     type="text"
-                                    placeholder="Nombre Telefonico"
+                                    placeholder="Numero de Telefono"
                                     onChange={handleChange}
                                     required
                                 />
@@ -97,11 +95,11 @@ const Auth = () => {
                         )}
                         {isSignup && (
                             <div className="auth__form-container_fields-content_input">
-                                <label htmlFor="avatarURL">Avatar</label>
+                                <label htmlFor="avatarURL">Avatar URL</label>
                                 <input 
                                     name="avatarURL" 
                                     type="text"
-                                    placeholder="Avatar"
+                                    placeholder="Avatar URL"
                                     onChange={handleChange}
                                     required
                                 />
@@ -136,21 +134,21 @@ const Auth = () => {
                     <div className="auth__form-container_fields-account">
                         <p>
                             {isSignup
-                             ? "Already have an account?" 
-                             : "Don't have an account?"
+                             ? "Ya tienes una cuenta?" 
+                             : "No tienes una cuneta?"
                              }
                              <span onClick={switchMode}>
-                             {isSignup ? ' Iniciar Sesion' : ' Registrarse'}
+                             {isSignup ? ' Iniciar Sesion' : ' Registrate'}
                              </span>
                         </p>
                     </div>
+                </div> 
+            </div>
+            <div className="auth__form-container_image">
+                <img src={signinImage} alt="sign in" />
             </div>
         </div>
-        <div className="auth__form-container_image">
-            <img src={signinImage} alt="sign in" />
-        </div>
-    </div>
-  )
+    )
 }
 
 export default Auth
